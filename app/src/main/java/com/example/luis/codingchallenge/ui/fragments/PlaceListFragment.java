@@ -25,7 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class PlaceListFragment extends Fragment {
 
     public static final String RESPONSE_OBJ = "response_obj";

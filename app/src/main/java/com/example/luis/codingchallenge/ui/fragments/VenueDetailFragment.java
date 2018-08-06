@@ -32,10 +32,12 @@ import com.example.luis.codingchallenge.model.Venue;
 import com.example.luis.codingchallenge.model.VenueDetailResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
@@ -63,8 +65,8 @@ public class VenueDetailFragment extends DialogFragment implements OnMapReadyCal
     @BindView(R.id.recyclerview_user_comments)
     RecyclerView mCommentRecyclerView;
 
-    @BindView(R.id.image_venue_detail_venue_icon)
-    ImageView mVenueIcon;
+    @BindView(R.id.image_venue_detail_venue)
+    ImageView mVenueImage;
 
     @BindView(R.id.card_venue_detail_venue_name)
     TextView mVenueName;
@@ -76,7 +78,6 @@ public class VenueDetailFragment extends DialogFragment implements OnMapReadyCal
     MapView mMap;
 
     private UserCommentAdapter mUserCommentAdapter;
-
 
     public static VenueDetailFragment NewInstance(Venue mVenue) {
 
@@ -144,6 +145,7 @@ public class VenueDetailFragment extends DialogFragment implements OnMapReadyCal
                             Venue venue = responseVenue.getVenue();
 
                             showPlaceImage(venue.getBestPhoto());
+                            showUrl(venue.getUrl());
 
                             Tips tips = venue.getTips();
                             ArrayList<TipGroup> groups = tips.getGroups();
@@ -169,15 +171,26 @@ public class VenueDetailFragment extends DialogFragment implements OnMapReadyCal
 
     private void showPlaceImage(Photo photo) {
         if (photo == null) {
+            mVenueImage.setVisibility(View.GONE);
             return;
         }
 
         String photoUrl = photo.getImageBySize("400x400");
         if (photoUrl == null) {
+            mVenueImage.setVisibility(View.GONE);
             return;
         }
 
-        Picasso.with(getContext()).load(photoUrl).into(mVenueIcon);
+        Picasso.with(getContext()).load(photoUrl).into(mVenueImage);
+    }
+
+    private void showUrl(String url) {
+        if (url != null) {
+            mVenueUrl.setText(url);
+            return;
+        }
+
+        ButterKnife.apply(mVenueUrl, VISIBILITY, View.GONE);
     }
 
     @Override
@@ -214,12 +227,6 @@ public class VenueDetailFragment extends DialogFragment implements OnMapReadyCal
 
         mVenueName.setText(mVenue.getName());
 
-        if (mVenue.getUrl() != null) {
-            mVenueUrl.setText(mVenue.getUrl());
-        } else {
-            ButterKnife.apply(mVenueUrl, VISIBILITY, View.GONE);
-        }
-
         getVenueDetail();
 
         MapsInitializer.initialize(getContext());
@@ -232,11 +239,11 @@ public class VenueDetailFragment extends DialogFragment implements OnMapReadyCal
     @OnClick({R.id.card_venue_detail_venue_url})
     public void onClick(View view) {
         if (view.getId() == R.id.card_venue_detail_venue_url) {
-            openWebPage(mVenue.getUrl());
+            openWebPage(mVenueUrl.getText().toString());
         }
     }
 
-    private void openWebPage(String url) {
+    private void openWebPage(@NonNull String url) {
         try {
             Uri webpage = Uri.parse(url);
             Intent myIntent = new Intent(Intent.ACTION_VIEW, webpage);

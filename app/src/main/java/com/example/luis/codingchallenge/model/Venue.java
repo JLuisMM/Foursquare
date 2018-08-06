@@ -14,7 +14,6 @@ public class Venue implements Parcelable {
     public Venue() {
     }
 
-
     public String getName() {
         return name;
     }
@@ -51,6 +50,10 @@ public class Venue implements Parcelable {
         return bestPhoto;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
     protected Venue(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
@@ -63,13 +66,6 @@ public class Venue implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    public String getUrl() {
-        if (location == null)
-            return null;
-
-        return location.getUrl();
     }
 
     @Override

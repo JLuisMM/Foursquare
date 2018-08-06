@@ -1,6 +1,5 @@
 package com.example.luis.codingchallenge.ui.fragments;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -31,7 +30,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 
 public class PlaceSearchFragment extends Fragment implements PlaceSearchContact.View {
 
@@ -81,10 +79,10 @@ public class PlaceSearchFragment extends Fragment implements PlaceSearchContact.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null)
+        if (getArguments() != null) {
             mCurrentLocation = getArguments().getParcelable(CURRENT_LOCATION);
+        }
 
-        //create our presenter
         if (mPresenter == null) {
             mPresenter = new PlaceSearchPresenter();
         }

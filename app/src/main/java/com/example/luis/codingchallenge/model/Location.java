@@ -25,10 +25,6 @@ public class Location implements Parcelable {
     @SerializedName("state")
     String state;
 
-    @SerializedName("url")
-    String url;
-
-
     public Location() {
     }
 
@@ -66,7 +62,6 @@ public class Location implements Parcelable {
         this.country = in.readString();
         this.city = in.readString();
         this.state = in.readString();
-        this.url = in.readString();
     }
 
     public String getReadableLoc() {
@@ -85,10 +80,6 @@ public class Location implements Parcelable {
         return 0;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeFloat(this.lat);
@@ -97,7 +88,6 @@ public class Location implements Parcelable {
         dest.writeString(this.country);
         dest.writeString(this.city);
         dest.writeString(this.state);
-        dest.writeString(this.url);
     }
 
     public static final Creator<Location> CREATOR = new Creator<Location>() {
